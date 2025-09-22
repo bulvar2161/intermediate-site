@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Бульвар 21</title>
+    <link rel="icon" href="лого лимонный.png" type="image/png">
+    <style>
+        @font-face {
+            font-family: 'Denistina';
+            src: url('./Denistina/denistina_en.ttf') format('truetype');
+            font-weight: normal;
+            font-style: normal;
+        }
+
+        @font-face {
+            font-family: 'Soyuz Grotesk';
+            src: url('../fonts/SoyuzGroteskBold.ttf') format('truetype'),
+                 url('../fonts/Soyuz_Grotesk_Bold.otf') format('opentype');
+            font-weight: bold;
+            font-style: normal;
+        }
+
+        :root {
+            --background-color: #1a1a1a;
+            --text-color: #f0f0f0;
+            --primary-accent-color: #d4af37;
+            --button-hover-color: #ffffff;
+            --main-color: #9B0000;
+            --aux-color-1: #0B2480;
+            --aux-color-2: #FFF9CA;
+            --main-font: 'Soyuz Grotesk', 'Helvetica Neue', Arial, sans-serif;
+            --transition-timing: cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: transparent;
+            color: var(--aux-color-2);
+            font-family: var(--main-font);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 2rem;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        /* Фоновая анимация "винильной пыли" */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.05'/%3E%3C/svg%3E");
+            animation: grain 8s steps(10) infinite;
+            opacity: 0.15;
+        }
+
+        .slideshow-background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            z-index: -1;
+        }
+
+        .slideshow-background img {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            opacity: 0;
+            filter: blur(5px); /* Небольшое размытие */
+            animation: imageAnimation 30s infinite; /* Общая длительность анимации */
+        }
+
+        .slideshow-background img:nth-child(1) { animation-delay: 0s; }
+        .slideshow-background img:nth-child(2) { animation-delay: 6s; }
+        .slideshow-background img:nth-child(3) { animation-delay: 12s; }
+        .slideshow-background img:nth-child(4) { animation-delay: 18s; }
+        .slideshow-background img:nth-child(5) { animation-delay: 24s; }
+        /* Добавьте больше nth-child для каждого изображения */
+
+        @keyframes imageAnimation {
+            0% { opacity: 0; }
+            8% { opacity: 1; }
+            25% { opacity: 1; }
+            33% { opacity: 0; }
+            100% { opacity: 0; }
+            100% { opacity: 0 }
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            width: 100%;
+            animation: fadeIn 1.5s var(--transition-timing);
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .logo {
+            text-align: center;
+            margin-bottom: 4rem;
+            opacity: 0;
+            animation: fadeIn 1.5s var(--transition-timing) forwards;
+            animation-delay: 0.5s;
+        }
+
+        h1 {
+            font-family: 'Denistina', cursive;
+            font-size: 2.5rem;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            color: var(--aux-color-2);
+            margin-bottom: 1rem;
+        }
+
+        .buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+            margin-bottom: 4rem;
+        }
+
+        .button {
+            background: transparent;
+            border: 6px solid var(--primary-accent-color);
+            color: var(--aux-color-2);
+            padding: 1.5rem 2.5rem;
+            font-size: 5.6rem;
+            cursor: pointer;
+            transition: all 0.3s var(--transition-timing);
+            text-decoration: none;
+            text-align: center;
+            border-radius: 4px;
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeIn 1s var(--transition-timing) forwards;
+        }
+
+        .button:nth-child(1) { animation-delay: 0.8s; }
+        .button:nth-child(2) { animation-delay: 1s; }
+        .button:nth-child(3) { animation-delay: 1.2s; }
+
+        .button:hover {
+            background-color: var(--primary-accent-color);
+            color: var(--button-hover-color);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(212, 175, 55, 0.2);
+        }
+
+        .button:active {
+            transform: translateY(0);
+        }
+
+        footer {
+            text-align: center;
+            padding: 2rem 0;
+            opacity: 0;
+            animation: fadeIn 1s var(--transition-timing) forwards;
+            animation-delay: 1.4s;
+        }
+
+        footer p {
+            font-size: 0.9rem;
+            color: var(--aux-color-2);
+        }
+
+        /* Медиа-запросы для адаптивности */
+        @media (max-width: 480px) {
+            body {
+                padding: 1.5rem;
+            }
+
+            h1 {
+                font-size: 2rem;
+                letter-spacing: 0.15em;
+            }
+
+            .button {
+                padding: 1rem;
+                font-size: 1rem;
+            }
+        }
+
+        /* Улучшенная поддержка тач-устройств */
+        @media (hover: none) {
+            .button {
+                -webkit-tap-highlight-color: transparent;
+            }
+
+            .button:active {
+                background-color: var(--primary-accent-color);
+                color: var(--button-hover-color);
+            }
+        }
+    </style>
+</head>
+    <body>
+        <div class="slideshow-background">
+            <img src="photo_2025-07-30_13-19-24.jpg" alt="Background Image 1">
+            <img src="photo_2025-07-30_15-25-46.jpg" alt="Background Image 2">
+            <img src="photo_2025-08-01_15-52-07 (2).jpg" alt="Background Image 3">
+            <img src="photo_2025-08-01_15-52-07.jpg" alt="Background Image 4">
+            <img src="photo_2025-08-01_15-52-08.jpg" alt="Background Image 5">
+            <img src="photo_2025-08-01_16-59-57.jpg" alt="Background Image 6">
+            <img src="photo_2025-08-04_15-28-04.jpg" alt="Background Image 7">
+            <img src="photo_2025-08-18_18-43-06.jpg" alt="Background Image 8">
+            <img src="photo_2025-08-30_16-38-12.jpg" alt="Background Image 9">
+            <img src="photo_2025-09-09_21-40-20.jpg" alt="Background Image 10">
+            <img src="photo_2025-09-12_17-43-16.jpg" alt="Background Image 11">
+        </div>
+    <div class="container">
+        <div class="logo">
+            <h1>Бульвар 21</h1>
+        </div>
+        
+        <div class="buttons">
+            <a href="https://bulvar2161.github.io/bulvar21menu/#" class="button">Посмотреть меню</a>
+            <a href="https://yandex.ru/maps/org/bulvar_21/119025499425?si=9t8dyx5vwrpv29rm91gwb809kc" class="button">Оставить отзыв на Яндекс.Картах</a>
+            <a href="https://netmonet.co/qr/830163/tip?o=4" class="button">Оставить чаевые</a>
+        </div>
+    </div>
+
+    <footer>
+            <p>Бульвар 21 &copy; 2025</p>
+        </footer>
+
+    <script>
+        // Обработка тач-событий для мобильных устройств
+        document.querySelectorAll('.button').forEach(button => {
+            button.addEventListener('touchstart', function() {
+                this.style.transform = 'scale(0.98)';
+            }, { passive: true });
+
+            button.addEventListener('touchend', function() {
+                this.style.transform = '';
+            }, { passive: true });
+        });
+    </script>
+</body>
+</html>
