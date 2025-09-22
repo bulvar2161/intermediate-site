@@ -15,9 +15,16 @@
 
         @font-face {
             font-family: 'Soyuz Grotesk';
-            src: url('./fonts/SoyuzGroteskBold.ttf') format('truetype'),
-                 url('./fonts/Soyuz_Grotesk_Bold.otf') format('opentype');
+            src: url('/new_site/fonts/SoyuzGroteskBold.ttf') format('truetype'),
+                 url('/new_site/fonts/Soyuz_Grotesk_Bold.otf') format('opentype');
             font-weight: bold;
+            font-style: normal;
+        }
+
+        @font-face {
+            font-family: 'Politburo';
+            src: url('./Politburo/Politburo.otf') format('opentype');
+            font-weight: normal;
             font-style: normal;
         }
 
@@ -29,7 +36,7 @@
             --main-color: #9B0000;
             --aux-color-1: #0B2480;
             --aux-color-2: #FFF9CA;
-            --main-font: 'Soyuz Grotesk', 'Helvetica Neue', Arial, sans-serif;
+            --main-font: 'Politburo', 'Helvetica Neue', Arial, sans-serif;
             --transition-timing: cubic-bezier(0.4, 0, 0.2, 1);
         }
 
