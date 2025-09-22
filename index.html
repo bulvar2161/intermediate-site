@@ -22,8 +22,22 @@
         }
 
         @font-face {
+            font-family: 'Wremena';
+            src: url('./Wremena/Wremena-Light.ttf') format('truetype');
+            font-weight: normal;
+            font-style: normal;
+        }
+
+        @font-face {
             font-family: 'Politburo';
             src: url('./Politburo/Politburo.otf') format('opentype');
+            font-weight: normal;
+            font-style: normal;
+        }
+
+        @font-face {
+            font-family: 'Soyuz Grotesk';
+            src: url('./soyuz-grotesk/Soyuz Grotesk Bold.otf') format('opentype');
             font-weight: normal;
             font-style: normal;
         }
@@ -36,7 +50,7 @@
             --main-color: #9B0000;
             --aux-color-1: #0B2480;
             --aux-color-2: #FFF9CA;
-            --main-font: 'Politburo', 'Helvetica Neue', Arial, sans-serif;
+            --main-font: 'Wremena';
             --transition-timing: cubic-bezier(0.4, 0, 0.2, 1);
         }
 
@@ -58,6 +72,7 @@
             padding: 2rem;
             position: relative;
             overflow-x: hidden;
+            letter-spacing: 0.1em;
         }
 
         /* Фоновая анимация "винильной пыли" */
@@ -126,6 +141,7 @@
 
         .logo {
             text-align: center;
+
             margin-bottom: 4rem;
             opacity: 0;
             animation: fadeIn 1.5s var(--transition-timing) forwards;
@@ -149,15 +165,17 @@
         }
 
         .button {
-            background: transparent;
-            border: 6px solid var(--primary-accent-color);
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+            border: 6px solid var(--main-color);
             color: var(--aux-color-2);
             padding: 1.5rem 2.5rem;
-            font-size: 5.6rem;
+            font-size: 6.0rem;
             cursor: pointer;
             transition: all 0.3s var(--transition-timing);
             text-decoration: none;
-            text-align: center;
+
             border-radius: 4px;
             opacity: 0;
             transform: translateY(20px);
@@ -167,12 +185,13 @@
         .button:nth-child(1) { animation-delay: 0.8s; }
         .button:nth-child(2) { animation-delay: 1s; }
         .button:nth-child(3) { animation-delay: 1.2s; }
+        .button:nth-child(4) { animation-delay: 1.4s; }
 
         .button:hover {
-            background-color: var(--primary-accent-color);
-            color: var(--button-hover-color);
+            background-color: var(--main-color);
+            color: var(--aux-color-2);
             transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(212, 175, 55, 0.2);
+            box-shadow: 0 4px 12px rgba(155, 0, 0, 0.2);
         }
 
         .button:active {
@@ -242,9 +261,10 @@
         </div>
         
         <div class="buttons">
-            <a href="https://bulvar2161.github.io/bulvar21menu/#" class="button">Посмотреть меню</a>
-            <a href="https://yandex.ru/maps/org/bulvar_21/119025499425?si=9t8dyx5vwrpv29rm91gwb809kc" class="button">Оставить отзыв на Яндекс.Картах</a>
-            <a href="https://netmonet.co/qr/830163/tip?o=4" class="button">Оставить чаевые</a>
+            <a href="https://bulvar2161.github.io/bulvar21menu/#" class="button"><img src="./icons8-меню-ресторана-48.png" alt="Меню" style="vertical-align: middle; margin-right: 10px;">Посмотреть меню</a>
+            <a href="https://yandex.ru/maps/org/bulvar_21/119025499425?si=9t8dyx5vwrpv29rm91gwb809kc" class="button"><img src="./icons8-маркер-48.png" alt="Карты" style="vertical-align: middle; margin-right: 10px;">Отзыв на Яндекс.Картах</a>
+            <a href="https://netmonet.co/qr/830163/tip?o=4" class="button"><img src="./icons8-чаевые-50 (3).png" alt="Чаевые" style="vertical-align: middle; margin-right: 10px;">Оставить чаевые</a>
+            <a href="tel:+79381625273" class="button"><img src="./icons8-контакты-48.png" alt="Контакты" style="vertical-align: middle; margin-right: 10px;">Забронировать стол</a>
         </div>
     </div>
 
