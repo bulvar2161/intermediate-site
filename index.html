@@ -1,1702 +1,288 @@
 <!DOCTYPE html>
-<html lang="ru" class="dark scroll-smooth">
+<html lang="ru">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-  <title>БУЛЬВАР 21 — Винил, Настойки & Крафт | Азов</title>
-  <meta name="description" content="Цифровое меню, виниловая атмосфера, чаевые, бронь столов и отзывы бара Бульвар 21 (Петровский бульвар, 21, Азов)." />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Бульвар 21</title>
+    <link rel="icon" href="лого лимонный.png" type="image/png">
+    <style>
+        @font-face {
+            font-family: 'Denistina';
+            src: url('./Denistina/denistina_en.ttf') format('truetype');
+            font-weight: normal;
+            font-style: normal;
+        }
 
-  <!-- Google Fonts: Montserrat ExtraBold/Black (geometric grotesque display), Manrope (clean UI), JetBrains Mono (prices, ABV, vinyl metadata) -->
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&family=Montserrat:wght@700;800;900&display=swap" rel="stylesheet" />
+        @font-face {
+            font-family: 'Soyuz Grotesk';
+            src: url('/new_site/fonts/SoyuzGroteskBold.ttf') format('truetype'),
+                 url('/new_site/fonts/Soyuz_Grotesk_Bold.otf') format('opentype');
+            font-weight: bold;
+            font-style: normal;
+        }
 
-  <!-- Tailwind CSS -->
-  <script src="https://cdn.tailwindcss.com"></script>
-  <script>
-    tailwind.config = {
-      darkMode: 'class',
-      theme: {
-        extend: {
-          colors: {
-            vinyl: {
-              bg: '#12090A',
-              surface: '#1A0D0F',
-              card: '#221114',
-              elevated: '#2B161A',
-              border: 'rgba(255, 249, 202, 0.12)',
-            },
-            burgundy: {
-              DEFAULT: '#9B0000',
-              bright: '#C41212',
-              deep: '#680000',
-            },
-            cream: {
-              DEFAULT: '#FFF9CA',
-              muted: 'rgba(255, 249, 202, 0.72)',
-              faint: 'rgba(255, 249, 202, 0.45)',
+        @font-face {
+            font-family: 'Wremena';
+            src: url('./Wremena/Wremena-Light.ttf') format('truetype');
+            font-weight: normal;
+            font-style: normal;
+        }
+
+        @font-face {
+            font-family: 'Politburo';
+            src: url('./Politburo/Politburo.otf') format('opentype');
+            font-weight: normal;
+            font-style: normal;
+        }
+
+        @font-face {
+            font-family: 'Soyuz Grotesk';
+            src: url('./soyuz-grotesk/Soyuz Grotesk Bold.otf') format('opentype');
+            font-weight: normal;
+            font-style: normal;
+        }
+
+        :root {
+            --background-color: #1a1a1a;
+            --text-color: #f0f0f0;
+            --primary-accent-color: #d4af37;
+            --button-hover-color: #ffffff;
+            --main-color: #9B0000;
+            --aux-color-1: #0B2480;
+            --aux-color-2: #FFF9CA;
+            --main-font: 'Wremena';
+            --transition-timing: cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: transparent;
+            color: var(--aux-color-2);
+            font-family: var(--main-font);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 2rem;
+            position: relative;
+            overflow-x: hidden;
+            letter-spacing: 0.1em;
+        }
+
+        /* Фоновая анимация "винильной пыли" */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.05'/%3E%3C/svg%3E");
+            animation: grain 8s steps(10) infinite;
+            opacity: 0.15;
+        }
+
+        .slideshow-background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            z-index: -1;
+        }
+
+        .slideshow-background img {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            opacity: 0;
+            filter: blur(5px); /* Небольшое размытие */
+            animation: imageAnimation 30s infinite; /* Общая длительность анимации */
+        }
+
+        .slideshow-background img:nth-child(1) { animation-delay: 0s; }
+        .slideshow-background img:nth-child(2) { animation-delay: 6s; }
+        .slideshow-background img:nth-child(3) { animation-delay: 12s; }
+        .slideshow-background img:nth-child(4) { animation-delay: 18s; }
+        .slideshow-background img:nth-child(5) { animation-delay: 24s; }
+        /* Добавьте больше nth-child для каждого изображения */
+
+        @keyframes imageAnimation {
+            0% { opacity: 0; }
+            8% { opacity: 1; }
+            25% { opacity: 1; }
+            33% { opacity: 0; }
+            100% { opacity: 0; }
+            100% { opacity: 0 }
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            width: 100%;
+            animation: fadeIn 1.5s var(--transition-timing);
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .logo {
+            text-align: center;
+
+            margin-bottom: 4rem;
+            opacity: 0;
+            animation: fadeIn 1.5s var(--transition-timing) forwards;
+            animation-delay: 0.5s;
+        }
+
+        h1 {
+            font-family: 'Denistina', cursive;
+            font-size: 2.5rem;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            color: var(--aux-color-2);
+            margin-bottom: 1rem;
+        }
+
+        .buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+            margin-bottom: 4rem;
+        }
+
+        .button {
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+            border: 6px solid var(--main-color);
+            color: var(--aux-color-2);
+            padding: 1.5rem 2.5rem;
+            font-size: 6.0rem;
+            cursor: pointer;
+            transition: all 0.3s var(--transition-timing);
+            text-decoration: none;
+
+            border-radius: 4px;
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeIn 1s var(--transition-timing) forwards;
+        }
+
+        .button:nth-child(1) { animation-delay: 0.8s; }
+        .button:nth-child(2) { animation-delay: 1s; }
+        .button:nth-child(3) { animation-delay: 1.2s; }
+        .button:nth-child(4) { animation-delay: 1.4s; }
+
+        .button:hover {
+            background-color: var(--main-color);
+            color: var(--aux-color-2);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(155, 0, 0, 0.2);
+        }
+
+        .button:active {
+            transform: translateY(0);
+        }
+
+        footer {
+            text-align: center;
+            padding: 2rem 0;
+            opacity: 0;
+            animation: fadeIn 1s var(--transition-timing) forwards;
+            animation-delay: 1.4s;
+        }
+
+        footer p {
+            font-size: 0.9rem;
+            color: var(--aux-color-2);
+        }
+
+        /* Медиа-запросы для адаптивности */
+        @media (max-width: 480px) {
+            body {
+                padding: 1.5rem;
             }
-          },
-          fontFamily: {
-            display: ['Montserrat', 'sans-serif'],
-            sans: ['Manrope', 'sans-serif'],
-            mono: ['JetBrains Mono', 'monospace'],
-          }
+
+            h1 {
+                font-size: 2rem;
+                letter-spacing: 0.15em;
+            }
+
+            .button {
+                padding: 1rem;
+                font-size: 1rem;
+            }
         }
-      }
-    };
-  </script>
 
-  <style>
-    /* Custom Analog Vinyl, Noise Texture & Micro-Interaction Styles */
-    :root {
-      --bg-base: #12090A;
-      --bg-surface: #1A0D0F;
-      --brand-red: #9B0000;
-      --brand-cream: #FFF9CA;
-    }
+        /* Улучшенная поддержка тач-устройств */
+        @media (hover: none) {
+            .button {
+                -webkit-tap-highlight-color: transparent;
+            }
 
-    * {
-      -webkit-tap-highlight-color: transparent;
-    }
-
-    body {
-      background-color: #0B0506;
-      color: var(--brand-cream);
-      font-family: 'Manrope', sans-serif;
-      overflow-x: hidden;
-    }
-
-    /* Analog Paper & Vinyl Sleeve Grain Overlay */
-    .analog-noise {
-      position: fixed;
-      inset: 0;
-      pointer-events: none;
-      z-index: 60;
-      opacity: 0.042;
-      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
-    }
-
-    /* Desktop Vinyl Sleeve Framing */
-    @media (min-width: 520px) {
-      .vinyl-sleeve-shell {
-        box-shadow:
-          0 25px 70px -15px rgba(0, 0, 0, 0.9),
-          0 0 0 1px rgba(255, 249, 202, 0.1),
-          inset 0 1px 0 rgba(255, 249, 202, 0.14);
-      }
-    }
-
-    /* Realistic Grooved Vinyl Disc */
-    .vinyl-disc {
-      background:
-        radial-gradient(circle at center,
-          transparent 0%,
-          transparent 31%,
-          rgba(255, 255, 255, 0.04) 31.5%,
-          transparent 32%,
-          rgba(0, 0, 0, 0.65) 36%,
-          rgba(255, 255, 255, 0.03) 40%,
-          rgba(0, 0, 0, 0.7) 44%,
-          rgba(255, 255, 255, 0.04) 48%,
-          rgba(0, 0, 0, 0.75) 52%,
-          rgba(255, 255, 255, 0.03) 56%,
-          rgba(0, 0, 0, 0.75) 60%,
-          rgba(255, 255, 255, 0.05) 64%,
-          rgba(0, 0, 0, 0.8) 68%,
-          #0c0708 72%
-        ),
-        conic-gradient(
-          from 35deg,
-          #140d0e 0deg,
-          #2a1b1d 42deg,
-          #0f090a 95deg,
-          #261719 145deg,
-          #110a0b 215deg,
-          #2d1c1e 265deg,
-          #140d0e 360deg
-        );
-      box-shadow:
-        0 10px 25px rgba(0, 0, 0, 0.75),
-        inset 0 0 0 1px rgba(255, 249, 202, 0.12);
-    }
-
-    @keyframes spinVinyl {
-      from { transform: rotate(0deg); }
-      to { transform: rotate(360deg); }
-    }
-
-    .vinyl-spinning {
-      animation: spinVinyl 5.5s linear infinite;
-    }
-
-    .vinyl-paused {
-      animation: spinVinyl 5.5s linear infinite;
-      animation-play-state: paused;
-    }
-
-    /* Tonearm Animation */
-    .tonearm {
-      transform-origin: 78% 18%;
-      transition: transform 0.65s cubic-bezier(0.34, 1.56, 0.64, 1);
-    }
-    .tonearm-engaged {
-      transform: rotate(22deg);
-    }
-    .tonearm-parked {
-      transform: rotate(-4deg);
-    }
-
-    /* Equalizer Bars */
-    @keyframes eqBounce {
-      0%, 100% { height: 4px; }
-      50% { height: 14px; }
-    }
-    .eq-bar {
-      animation: eqBounce 0.9s ease-in-out infinite;
-    }
-    .eq-bar:nth-child(2) { animation-delay: 0.2s; }
-    .eq-bar:nth-child(3) { animation-delay: 0.4s; }
-    .eq-bar:nth-child(4) { animation-delay: 0.15s; }
-    .eq-paused .eq-bar {
-      animation-play-state: paused;
-      height: 4px !important;
-    }
-
-    /* Hide Scrollbars for Category Pills */
-    .no-scrollbar::-webkit-scrollbar {
-      display: none;
-    }
-    .no-scrollbar {
-      -ms-overflow-style: none;
-      scrollbar-width: none;
-    }
-
-    /* Tactile Button Press */
-    .tactile-btn {
-      transition: transform 0.14s cubic-bezier(0.22, 1, 0.36, 1), background-color 0.2s ease, border-color 0.2s ease;
-    }
-    .tactile-btn:active {
-      transform: scale(0.965);
-    }
-
-    /* Bottom Sheet Modal Transitions */
-    .sheet-backdrop {
-      opacity: 0;
-      pointer-events: none;
-      transition: opacity 0.25s ease;
-    }
-    .sheet-backdrop.open {
-      opacity: 1;
-      pointer-events: auto;
-    }
-    .sheet-panel {
-      transform: translateY(100%);
-      transition: transform 0.32s cubic-bezier(0.22, 1, 0.36, 1);
-    }
-    .sheet-backdrop.open .sheet-panel {
-      transform: translateY(0);
-    }
-  </style>
+            .button:active {
+                background-color: var(--primary-accent-color);
+                color: var(--button-hover-color);
+            }
+        }
+    </style>
 </head>
-<body class="min-h-screen flex justify-center sm:py-6 selection:bg-burgundy selection:text-cream">
-
-  <!-- Subtle Analog Grain Texture -->
-  <div class="analog-noise" aria-hidden="true"></div>
-
-  <!-- Main Mobile-First Vinyl Sleeve Container (max-w-480px) -->
-  <main class="w-full max-w-[480px] min-h-screen sm:min-h-0 bg-vinyl-bg sm:rounded-[28px] vinyl-sleeve-shell relative overflow-x-clip pb-28">
-
-    <!-- Top Sleeve Spine Highlight -->
-    <div class="h-1.5 w-full bg-gradient-to-r from-burgundy-deep via-burgundy to-burgundy-deep"></div>
-
-    <!-- =====================================================================
-         1. TOP BAR & INTERACTIVE VINYL HEADER
-         ===================================================================== -->
-    <header class="px-4 pt-4 pb-3 relative">
-      <!-- Top Status & Address Bar -->
-      <div class="flex items-center justify-between gap-2 mb-3">
-        <div class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-vinyl-surface border border-vinyl-border text-[11px] font-mono text-cream-muted">
-          <svg class="w-3.5 h-3.5 text-burgundy-bright shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <path d="M12 21s-6-5.33-6-10a6 6 0 1 1 12 0c0 4.67-6 10-6 10z"/>
-            <circle cx="12" cy="11" r="2.2"/>
-          </svg>
-          <span class="truncate">Петровский б-р, 21 • Азов</span>
+    <body>
+        <div class="slideshow-background">
+            <img src="photo_2025-07-30_13-19-24.jpg" alt="Background Image 1">
+            <img src="photo_2025-07-30_15-25-46.jpg" alt="Background Image 2">
+            <img src="photo_2025-08-01_15-52-07 (2).jpg" alt="Background Image 3">
+            <img src="photo_2025-08-01_15-52-07.jpg" alt="Background Image 4">
+            <img src="photo_2025-08-01_15-52-08.jpg" alt="Background Image 5">
+            <img src="photo_2025-08-01_16-59-57.jpg" alt="Background Image 6">
+            <img src="photo_2025-08-04_15-28-04.jpg" alt="Background Image 7">
+            <img src="photo_2025-08-18_18-43-06.jpg" alt="Background Image 8">
+            <img src="photo_2025-08-30_16-38-12.jpg" alt="Background Image 9">
+            <img src="photo_2025-09-09_21-40-20.jpg" alt="Background Image 10">
+            <img src="photo_2025-09-12_17-43-16.jpg" alt="Background Image 11">
         </div>
-
-        <div id="live-status-pill" class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-emerald-950/60 border border-emerald-500/30 text-[11px] font-mono text-emerald-300 shrink-0">
-          <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
-          <span>Открыто • до 02:00</span>
+    <div class="container">
+        <div class="logo">
+            <h1>Бульвар 21</h1>
         </div>
-      </div>
-
-      <!-- Brand Title & Table Badge -->
-      <div class="flex items-end justify-between gap-3 mb-4">
-        <div>
-          <p class="font-mono text-[10px] uppercase tracking-[0.22em] text-cream-faint mb-0.5">
-            VINYL • CRAFT • INFUSIONS
-          </p>
-          <h1 class="font-display font-black text-3xl sm:text-[34px] leading-none tracking-tight text-cream uppercase">
-            БУЛЬВАР <span class="text-burgundy-bright">21</span>
-          </h1>
+        
+        <div class="buttons">
+            <a href="https://bulvar2161.github.io/bulvar21menu/#" class="button"><img src="./icons8-меню-ресторана-48.png" alt="Меню" style="vertical-align: middle; margin-right: 10px;">Посмотреть меню</a>
+            <a href="https://yandex.ru/maps/org/bulvar_21/119025499425?si=9t8dyx5vwrpv29rm91gwb809kc" class="button"><img src="./icons8-маркер-48.png" alt="Карты" style="vertical-align: middle; margin-right: 10px;">Отзыв на Яндекс.Картах</a>
+            <a href="https://netmonet.co/qr/830163/tip?o=4" class="button"><img src="./icons8-чаевые-50 (3).png" alt="Чаевые" style="vertical-align: middle; margin-right: 10px;">Оставить чаевые</a>
+            <a href="tel:+79381625273" class="button"><img src="./icons8-контакты-48.png" alt="Контакты" style="vertical-align: middle; margin-right: 10px;">Забронировать стол</a>
         </div>
-        <div class="text-right shrink-0">
-          <span class="inline-block px-2.5 py-1 rounded-lg bg-vinyl-card border border-vinyl-border font-mono text-[11px] text-cream">
-            Стол <span class="text-burgundy-bright font-bold">#04</span>
-          </span>
-        </div>
-      </div>
-
-      <!-- Interactive Spinning Vinyl Record Card -->
-      <section aria-label="Виниловый проигрыватель бара" class="rounded-2xl bg-gradient-to-br from-vinyl-card via-vinyl-surface to-[#150A0B] border border-vinyl-border p-3.5 relative overflow-hidden shadow-lg">
-        <!-- Subtle Decorative Groove Rings in Background -->
-        <div class="absolute -right-12 -bottom-12 w-44 h-44 rounded-full border border-cream/[0.04] pointer-events-none"></div>
-        <div class="absolute -right-6 -bottom-6 w-32 h-32 rounded-full border border-cream/[0.04] pointer-events-none"></div>
-
-        <div class="flex items-center gap-3.5 relative z-10">
-          <!-- Interactive Vinyl Record + Tonearm -->
-          <button
-            type="button"
-            id="vinyl-toggle-btn"
-            onclick="toggleVinylSpin()"
-            aria-label="Запустить или остановить пластинку"
-            class="relative w-[92px] h-[92px] shrink-0 group focus:outline-none tactile-btn"
-          >
-            <!-- Spinning Disc -->
-            <div id="vinyl-disc" class="w-full h-full rounded-full vinyl-disc vinyl-spinning flex items-center justify-center relative">
-              <!-- Light Sheen Reflection -->
-              <div class="absolute inset-0 rounded-full bg-gradient-to-tr from-transparent via-white/[0.06] to-transparent pointer-events-none"></div>
-              <!-- Signature #9B0000 Center Label -->
-              <div class="w-9 h-9 rounded-full bg-burgundy border border-cream/30 flex flex-col items-center justify-center shadow-inner relative">
-                <span class="font-display font-black text-[7px] tracking-tighter text-cream leading-none">Б•21</span>
-                <span class="font-mono text-[5px] text-cream/80 mt-0.5">33 RPM</span>
-                <!-- Center Spindle Hole -->
-                <div class="w-1.5 h-1.5 rounded-full bg-vinyl-bg border border-cream/40 mt-0.5"></div>
-              </div>
-            </div>
-
-            <!-- Stylus Tonearm SVG -->
-            <svg id="vinyl-tonearm" class="tonearm tonearm-engaged absolute -top-1 -right-1.5 w-11 h-14 pointer-events-none drop-shadow-md" viewBox="0 0 44 56" fill="none">
-              <circle cx="34" cy="10" r="5" fill="#2B161A" stroke="#FFF9CA" stroke-opacity="0.35" stroke-width="1.2"/>
-              <circle cx="34" cy="10" r="2" fill="#9B0000"/>
-              <path d="M34 10 L29 34 L21 44" stroke="#FFF9CA" stroke-opacity="0.85" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
-              <rect x="17" y="42" width="5" height="7" rx="1" transform="rotate(35 17 42)" fill="#9B0000" stroke="#FFF9CA" stroke-width="0.8"/>
-            </svg>
-          </button>
-
-          <!-- Track Metadata & Request Trigger -->
-          <div class="flex-1 min-w-0">
-            <div class="flex items-center justify-between gap-2 mb-1">
-              <span class="inline-flex items-center gap-1.5 font-mono text-[10px] uppercase tracking-wider text-cream-muted">
-                <span id="eq-bars" class="inline-flex items-end gap-[2px] h-3.5" aria-hidden="true">
-                  <span class="eq-bar w-[2px] bg-burgundy-bright rounded-full"></span>
-                  <span class="eq-bar w-[2px] bg-burgundy-bright rounded-full"></span>
-                  <span class="eq-bar w-[2px] bg-burgundy-bright rounded-full"></span>
-                  <span class="eq-bar w-[2px] bg-burgundy-bright rounded-full"></span>
-                </span>
-                <span id="vinyl-status-text">Сейчас крутится</span>
-              </span>
-              <span class="font-mono text-[10px] text-cream-faint">SIDE A</span>
-            </div>
-
-            <h2 id="current-track-title" class="font-display font-extrabold text-sm text-cream truncate">
-              Nightmares on Wax — Les Nuits
-            </h2>
-            <p id="current-track-vibe" class="text-xs text-cream-muted truncate mt-0.5">
-              Тёплый downtempo, виниловый треск и ламповый грув
-            </p>
-
-            <div class="flex items-center gap-2 mt-2.5">
-              <button
-                type="button"
-                onclick="toggleVinylSpin()"
-                class="tactile-btn px-2.5 py-1 rounded-lg bg-vinyl-elevated hover:bg-burgundy/40 border border-vinyl-border font-mono text-[11px] text-cream flex items-center gap-1"
-              >
-                <span id="vinyl-btn-icon">❚❚</span>
-                <span id="vinyl-btn-label">Пауза</span>
-              </button>
-
-              <button
-                type="button"
-                onclick="openModal('track-modal')"
-                class="tactile-btn px-2.5 py-1 rounded-lg bg-burgundy hover:bg-burgundy-bright text-cream font-semibold text-[11px] flex items-center gap-1 shadow-sm"
-              >
-                <svg class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
-                  <path d="M9 18V5l12-2v13"/>
-                  <circle cx="6" cy="18" r="3"/>
-                  <circle cx="18" cy="16" r="3"/>
-                </svg>
-                <span>Заказать трек</span>
-              </button>
-            </div>
-          </div>
-        </div>
-      </section>
-    </header>
-
-    <!-- =====================================================================
-         2. PRIMARY GUEST ACTION GRID (2x2 BENTO ABOVE THE FOLD)
-         ===================================================================== -->
-    <section aria-label="Быстрые действия гостя" class="px-4 py-2">
-      <div class="grid grid-cols-2 gap-2.5">
-
-        <!-- Card 1: Меню и карта бара -->
-        <a
-          href="#menu-section"
-          class="tactile-btn group rounded-2xl bg-burgundy hover:bg-burgundy-bright p-3.5 border border-cream/15 flex flex-col justify-between min-h-[104px] relative overflow-hidden shadow-md"
-        >
-          <div class="w-9 h-9 rounded-xl bg-vinyl-bg/35 border border-cream/20 flex items-center justify-center text-cream">
-            <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <path d="M8 22h8M12 15v7M6 3h12l-1.5 7.5a4.5 4.5 0 0 1-9 0L6 3z"/>
-              <path d="M6.5 6.5h11"/>
-            </svg>
-          </div>
-          <div class="mt-3">
-            <div class="font-display font-extrabold text-sm text-cream leading-tight">
-              Меню и карта бара
-            </div>
-            <div class="font-mono text-[10px] text-cream/80 mt-0.5">
-              Настойки • Крафт • Кухня ↓
-            </div>
-          </div>
-        </a>
-
-        <!-- Card 2: Оставить чаевые -->
-        <button
-          type="button"
-          onclick="openModal('tip-modal')"
-          class="tactile-btn text-left rounded-2xl bg-vinyl-card hover:bg-vinyl-elevated p-3.5 border border-vinyl-border flex flex-col justify-between min-h-[104px] relative overflow-hidden"
-        >
-          <div class="flex items-center justify-between w-full">
-            <div class="w-9 h-9 rounded-xl bg-burgundy/25 border border-burgundy/50 flex items-center justify-center text-cream">
-              <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/>
-              </svg>
-            </div>
-            <span class="font-mono text-[10px] px-1.5 py-0.5 rounded bg-cream/10 text-cream">₽</span>
-          </div>
-          <div class="mt-3">
-            <div class="font-display font-extrabold text-sm text-cream leading-tight">
-              Оставить чаевые
-            </div>
-            <div class="text-[11px] text-cream-muted mt-0.5">
-              Поблагодарить команду
-            </div>
-          </div>
-        </button>
-
-        <!-- Card 3: Отзыв на картах -->
-        <button
-          type="button"
-          onclick="openModal('review-modal')"
-          class="tactile-btn text-left rounded-2xl bg-vinyl-card hover:bg-vinyl-elevated p-3.5 border border-vinyl-border flex flex-col justify-between min-h-[104px] relative overflow-hidden"
-        >
-          <div class="flex items-center justify-between w-full">
-            <div class="w-9 h-9 rounded-xl bg-amber-500/15 border border-amber-400/30 flex items-center justify-center text-amber-300">
-              <svg class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor">
-                <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
-              </svg>
-            </div>
-            <span class="font-mono text-[10px] text-amber-300/90">4.9 ★</span>
-          </div>
-          <div class="mt-3">
-            <div class="font-display font-extrabold text-sm text-cream leading-tight">
-              Отзыв на картах
-            </div>
-            <div class="text-[11px] text-cream-muted mt-0.5">
-              Яндекс • 2ГИС • Комплимент
-            </div>
-          </div>
-        </button>
-
-        <!-- Card 4: Наш Telegram -->
-        <button
-          type="button"
-          onclick="openModal('telegram-modal')"
-          class="tactile-btn text-left rounded-2xl bg-vinyl-card hover:bg-vinyl-elevated p-3.5 border border-vinyl-border flex flex-col justify-between min-h-[104px] relative overflow-hidden"
-        >
-          <div class="flex items-center justify-between w-full">
-            <div class="w-9 h-9 rounded-xl bg-sky-500/15 border border-sky-400/30 flex items-center justify-center text-sky-300">
-              <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <path d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z"/>
-              </svg>
-            </div>
-            <span class="font-mono text-[10px] text-sky-300/90">@bulvar21</span>
-          </div>
-          <div class="mt-3">
-            <div class="font-display font-extrabold text-sm text-cream leading-tight">
-              Наш Telegram
-            </div>
-            <div class="text-[11px] text-cream-muted mt-0.5">
-              Афиша, секретные релизы
-            </div>
-          </div>
-        </button>
-
-      </div>
-    </section>
-
-    <!-- =====================================================================
-         3. AFISHA / NEAREST EVENT BANNER (COMPACT & STYLISH)
-         ===================================================================== -->
-    <section aria-label="Ближайшее событие" class="px-4 py-2.5">
-      <div class="rounded-2xl bg-gradient-to-r from-[#241013] via-[#1C0D10] to-[#291115] border border-burgundy/50 p-3.5 relative overflow-hidden">
-        <div class="flex items-start justify-between gap-3">
-          <div class="min-w-0">
-            <div class="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-md bg-burgundy text-cream font-mono text-[10px] font-semibold uppercase tracking-wider mb-1.5">
-              <span>ПТ • 22:00</span>
-              <span>•</span>
-              <span>ВХОД СВОБОДНЫЙ</span>
-            </div>
-            <h3 class="font-display font-extrabold text-[15px] text-cream leading-snug">
-              ВИНИЛОВЫЙ ВЕЧЕР: FUNK & SOUL
-            </h3>
-            <p class="text-xs text-cream-muted mt-1 leading-relaxed">
-              Крутим редкие пласты с оригинальных сорокопяток, разливаем фирменную травяную и пряную вишню.
-            </p>
-          </div>
-        </div>
-
-        <div class="mt-3 pt-2.5 border-t border-vinyl-border flex items-center justify-between gap-2">
-          <span class="font-mono text-[11px] text-cream-faint">
-            Осталось 3 стола у стойки
-          </span>
-          <button
-            type="button"
-            onclick="openModal('booking-modal')"
-            class="tactile-btn px-3.5 py-2 rounded-xl bg-cream text-vinyl-bg hover:bg-white font-display font-extrabold text-xs tracking-tight shadow-sm shrink-0"
-          >
-            Забронировать стол
-          </button>
-        </div>
-      </div>
-    </section>
-
-    <!-- =====================================================================
-         4. INTERACTIVE BAR & KITCHEN MENU (SEGMENTED TABS + SEARCH/FILTER)
-         ===================================================================== -->
-    <section id="menu-section" aria-label="Меню бара и кухни" class="pt-3">
-      <!-- Section Header -->
-      <div class="px-4 flex items-center justify-between gap-2 mb-2.5">
-        <div>
-          <h2 class="font-display font-black text-xl text-cream uppercase tracking-tight">
-            Карта бара и кухня
-          </h2>
-          <p class="text-xs text-cream-muted">
-            Нажмите <span class="font-mono text-cream">+</span> чтобы собрать заметку к заказу для бармена
-          </p>
-        </div>
-      </div>
-
-      <!-- Sticky Category Tabs & Search -->
-      <div class="sticky top-0 z-30 bg-vinyl-bg/95 backdrop-blur-md border-y border-vinyl-border px-4 py-2.5 space-y-2">
-        <!-- Category Pills -->
-        <div id="category-tabs" class="flex items-center gap-1.5 overflow-x-auto no-scrollbar" role="tablist">
-          <!-- Rendered dynamically via JS -->
-        </div>
-
-        <!-- Search & Quick Filter Row -->
-        <div class="flex items-center gap-2">
-          <div class="relative flex-1">
-            <svg class="w-3.5 h-3.5 text-cream-faint absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <circle cx="11" cy="11" r="8"/>
-              <path d="M21 21l-4.35-4.35"/>
-            </svg>
-            <input
-              id="menu-search"
-              type="search"
-              placeholder="Поиск: настойка, пилснер, хот-дог..."
-              oninput="handleSearch(this.value)"
-              class="w-full pl-8 pr-3 py-1.5 rounded-xl bg-vinyl-surface border border-vinyl-border text-xs text-cream placeholder:text-cream-faint focus:outline-none focus:border-burgundy-bright"
-            />
-          </div>
-
-          <button
-            type="button"
-            id="hit-filter-btn"
-            onclick="toggleHitFilter()"
-            class="tactile-btn px-2.5 py-1.5 rounded-xl bg-vinyl-surface border border-vinyl-border font-mono text-[11px] text-cream-muted shrink-0 flex items-center gap-1"
-          >
-            <span>🔥</span>
-            <span>Хиты</span>
-          </button>
-        </div>
-      </div>
-
-      <!-- Menu Items Container -->
-      <div id="menu-items-list" class="px-4 pt-3 space-y-2.5">
-        <!-- Rendered dynamically via JS -->
-      </div>
-    </section>
-
-    <!-- =====================================================================
-         5. FOOTER & QUICK CONTACTS
-         ===================================================================== -->
-    <footer class="mt-8 px-4 pt-6 pb-8 border-t border-vinyl-border bg-vinyl-surface/50">
-      <div class="flex items-center justify-between mb-4">
-        <div>
-          <div class="font-display font-black text-lg text-cream tracking-tight">
-            БУЛЬВАР <span class="text-burgundy-bright">21</span>
-          </div>
-          <p class="text-xs text-cream-muted mt-0.5">
-            Петровский бульвар, 21, Азов
-          </p>
-        </div>
-        <div class="w-10 h-10 rounded-full vinyl-disc flex items-center justify-center">
-          <div class="w-3.5 h-3.5 rounded-full bg-burgundy border border-cream/30"></div>
-        </div>
-      </div>
-
-      <!-- Working Hours Card -->
-      <div class="rounded-xl bg-vinyl-card border border-vinyl-border p-3 mb-3 font-mono text-xs space-y-1">
-        <div class="flex justify-between text-cream-muted">
-          <span>Вс — Чт</span>
-          <span class="text-cream">16:00 — 01:00</span>
-        </div>
-        <div class="flex justify-between text-cream-muted">
-          <span>Пт — Сб (Винил и сеты)</span>
-          <span class="text-cream font-semibold">16:00 — 02:00</span>
-        </div>
-      </div>
-
-      <!-- One-Tap Wi-Fi & Call Buttons -->
-      <div class="grid grid-cols-2 gap-2.5">
-        <button
-          type="button"
-          onclick="copyWifiPassword()"
-          class="tactile-btn rounded-xl bg-vinyl-card hover:bg-vinyl-elevated border border-vinyl-border p-3 text-left flex items-center gap-2.5"
-        >
-          <div class="w-8 h-8 rounded-lg bg-burgundy/25 border border-burgundy/50 flex items-center justify-center text-cream shrink-0">
-            <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <path d="M5 12.55a11 11 0 0 1 14.08 0"/>
-              <path d="M1.42 9a16 16 0 0 1 21.16 0"/>
-              <path d="M8.53 16.11a6 6 0 0 1 6.95 0"/>
-              <circle cx="12" cy="20" r="1"/>
-            </svg>
-          </div>
-          <div class="min-w-0">
-            <div class="text-[11px] font-semibold text-cream truncate">Wi-Fi гостям</div>
-            <div class="font-mono text-[10px] text-cream-muted truncate">vinyl21azov 📋</div>
-          </div>
-        </button>
-
-        <a
-          href="tel:+79001232121"
-          class="tactile-btn rounded-xl bg-vinyl-card hover:bg-vinyl-elevated border border-vinyl-border p-3 text-left flex items-center gap-2.5"
-        >
-          <div class="w-8 h-8 rounded-lg bg-emerald-500/15 border border-emerald-500/30 flex items-center justify-center text-emerald-300 shrink-0">
-            <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/>
-            </svg>
-          </div>
-          <div class="min-w-0">
-            <div class="text-[11px] font-semibold text-cream truncate">Позвонить в бар</div>
-            <div class="font-mono text-[10px] text-cream-muted truncate">+7 (900) 123-21-21</div>
-          </div>
-        </a>
-      </div>
-
-      <p class="text-center font-mono text-[10px] text-cream-faint mt-6">
-        18+ • Чрезмерное употребление алкоголя вредит вашему здоровью
-      </p>
-    </footer>
-
-  </main>
-
-  <!-- =====================================================================
-       FLOATING "МОЙ ВЫБОР / ЗАМЕТКИ К ЗАКАЗУ" BAR
-       ===================================================================== -->
-  <div
-    id="order-floating-bar"
-    class="fixed bottom-3 left-1/2 -translate-x-1/2 w-[calc(100%-24px)] max-w-[456px] z-40 transition-all duration-300 translate-y-28 opacity-0 pointer-events-none"
-  >
-    <button
-      type="button"
-      onclick="openModal('order-drawer-modal')"
-      class="tactile-btn w-full rounded-2xl bg-burgundy hover:bg-burgundy-bright text-cream px-4 py-3.5 shadow-2xl border border-cream/25 flex items-center justify-between gap-3"
-    >
-      <div class="flex items-center gap-2.5">
-        <span id="order-badge-count" class="w-6 h-6 rounded-lg bg-cream text-vinyl-bg font-mono font-bold text-xs flex items-center justify-center">
-          0
-        </span>
-        <div class="text-left">
-          <div class="font-display font-extrabold text-xs uppercase tracking-wide">
-            Мой выбор за столом
-          </div>
-          <div class="text-[11px] text-cream/85">
-            Показать бармену или официанту
-          </div>
-        </div>
-      </div>
-      <div id="order-total-pill" class="font-mono font-bold text-sm bg-vinyl-bg/35 px-2.5 py-1 rounded-lg">
-        0 ₽
-      </div>
-    </button>
-  </div>
-
-  <!-- =====================================================================
-       TOAST NOTIFICATION
-       ===================================================================== -->
-  <div
-    id="toast-banner"
-    role="status"
-    aria-live="polite"
-    class="fixed top-4 left-1/2 -translate-x-1/2 z-[70] max-w-[440px] w-[calc(100%-32px)] pointer-events-none opacity-0 -translate-y-4 transition-all duration-300"
-  >
-    <div class="rounded-2xl bg-vinyl-elevated/95 backdrop-blur-md border border-cream/25 px-4 py-3 shadow-2xl flex items-center gap-2.5">
-      <span id="toast-icon" class="text-base">✨</span>
-      <span id="toast-text" class="text-xs font-medium text-cream leading-snug">Готово</span>
     </div>
-  </div>
 
-  <!-- =====================================================================
-       BOTTOM-SHEET MODALS
-       ===================================================================== -->
-
-  <!-- MODAL 1: МОЙ ВЫБОР / ЗАМЕТКИ К ЗАКАЗУ -->
-  <div id="order-drawer-modal" class="sheet-backdrop fixed inset-0 z-50 bg-black/75 backdrop-blur-xs flex items-end justify-center" onclick="handleBackdropClick(event, 'order-drawer-modal')">
-    <div class="sheet-panel w-full max-w-[480px] bg-vinyl-surface border-t border-x border-vinyl-border rounded-t-3xl p-5 max-h-[85vh] flex flex-col">
-      <div class="w-10 h-1 rounded-full bg-cream/20 mx-auto mb-4"></div>
-      <div class="flex items-center justify-between mb-3">
-        <div>
-          <h3 class="font-display font-black text-lg text-cream uppercase">Мой выбор • Стол #04</h3>
-          <p class="text-xs text-cream-muted">Удобная шпаргалка к приходу официанта или у стойки</p>
-        </div>
-        <button type="button" onclick="clearOrder()" class="font-mono text-[11px] text-cream-faint hover:text-cream underline">
-          Очистить
-        </button>
-      </div>
-
-      <div id="order-drawer-items" class="flex-1 overflow-y-auto space-y-2 my-2 pr-1">
-        <!-- Populated dynamically -->
-      </div>
-
-      <div class="mt-3 pt-3 border-t border-vinyl-border space-y-3">
-        <input
-          id="order-table-note"
-          type="text"
-          placeholder="Заметка для себя или бармена (напр. без льда, поострее)..."
-          class="w-full px-3 py-2 rounded-xl bg-vinyl-card border border-vinyl-border text-xs text-cream placeholder:text-cream-faint focus:outline-none focus:border-burgundy-bright"
-        />
-
-        <div class="flex items-center justify-between font-mono">
-          <span class="text-xs text-cream-muted">Ориентировочно:</span>
-          <span id="drawer-total-sum" class="text-lg font-bold text-cream">0 ₽</span>
-        </div>
-
-        <div class="grid grid-cols-2 gap-2">
-          <button
-            type="button"
-            onclick="copyOrderSummary()"
-            class="tactile-btn py-3 rounded-xl bg-vinyl-card border border-vinyl-border font-semibold text-xs text-cream"
-          >
-            Скопировать список
-          </button>
-          <button
-            type="button"
-            onclick="closeModal('order-drawer-modal'); showToast('Покажите этот экран бармену или официанту 🍸', '🥂')"
-            class="tactile-btn py-3 rounded-xl bg-burgundy hover:bg-burgundy-bright font-display font-extrabold text-xs text-cream"
-          >
-            Готово к заказу
-          </button>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- MODAL 2: ОСТАВИТЬ ЧАЕВЫЕ -->
-  <div id="tip-modal" class="sheet-backdrop fixed inset-0 z-50 bg-black/75 backdrop-blur-xs flex items-end justify-center" onclick="handleBackdropClick(event, 'tip-modal')">
-    <div class="sheet-panel w-full max-w-[480px] bg-vinyl-surface border-t border-x border-vinyl-border rounded-t-3xl p-5">
-      <div class="w-10 h-1 rounded-full bg-cream/20 mx-auto mb-4"></div>
-      <div class="flex items-center justify-between mb-3">
-        <div>
-          <h3 class="font-display font-black text-lg text-cream uppercase">Чаевые команде</h3>
-          <p class="text-xs text-cream-muted">100% перевода поступает выбранному сотруднику</p>
-        </div>
-        <button type="button" onclick="closeModal('tip-modal')" class="w-8 h-8 rounded-full bg-vinyl-card text-cream-muted flex items-center justify-center">✕</button>
-      </div>
-
-      <!-- Recipient Selector -->
-      <label class="block font-mono text-[10px] uppercase tracking-wider text-cream-faint mb-1.5">Кому отправляем</label>
-      <div class="grid grid-cols-3 gap-2 mb-4" id="tip-recipient-group">
-        <button type="button" onclick="selectTipRecipient(this, 'Бармену за стойкой')" class="tip-rec-btn active tactile-btn p-2.5 rounded-xl bg-burgundy border border-cream/30 text-left">
-          <div class="text-sm mb-0.5">🍸</div>
-          <div class="font-semibold text-[11px] text-cream leading-tight">Бармену</div>
-        </button>
-        <button type="button" onclick="selectTipRecipient(this, 'Официанту в зале')" class="tip-rec-btn tactile-btn p-2.5 rounded-xl bg-vinyl-card border border-vinyl-border text-left">
-          <div class="text-sm mb-0.5">🤵</div>
-          <div class="font-semibold text-[11px] text-cream leading-tight">Официанту</div>
-        </button>
-        <button type="button" onclick="selectTipRecipient(this, 'Всей смене Бульвар 21')" class="tip-rec-btn tactile-btn p-2.5 rounded-xl bg-vinyl-card border border-vinyl-border text-left">
-          <div class="text-sm mb-0.5">🔥</div>
-          <div class="font-semibold text-[11px] text-cream leading-tight">Всей смене</div>
-        </button>
-      </div>
-
-      <!-- Amount Presets -->
-      <label class="block font-mono text-[10px] uppercase tracking-wider text-cream-faint mb-1.5">Сумма благодарности</label>
-      <div class="grid grid-cols-4 gap-2 mb-3">
-        <button type="button" onclick="selectTipAmount(150, this)" class="tip-amt-btn tactile-btn py-2.5 rounded-xl bg-vinyl-card border border-vinyl-border font-mono font-bold text-xs text-cream">150 ₽</button>
-        <button type="button" onclick="selectTipAmount(300, this)" class="tip-amt-btn active tactile-btn py-2.5 rounded-xl bg-burgundy border border-cream/30 font-mono font-bold text-xs text-cream">300 ₽</button>
-        <button type="button" onclick="selectTipAmount(500, this)" class="tip-amt-btn tactile-btn py-2.5 rounded-xl bg-vinyl-card border border-vinyl-border font-mono font-bold text-xs text-cream">500 ₽</button>
-        <button type="button" onclick="focusCustomTip()" class="tip-amt-btn tactile-btn py-2.5 rounded-xl bg-vinyl-card border border-vinyl-border font-mono text-[11px] text-cream-muted">Своя</button>
-      </div>
-
-      <div class="relative mb-3">
-        <input
-          id="custom-tip-input"
-          type="number"
-          min="50"
-          value="300"
-          oninput="selectedTipAmount = Number(this.value) || 0; updateTipButtonLabel()"
-          class="w-full px-3.5 py-2.5 rounded-xl bg-vinyl-card border border-vinyl-border font-mono text-sm text-cream focus:outline-none focus:border-burgundy-bright"
-          placeholder="Введите сумму в ₽"
-        />
-        <span class="absolute right-3.5 top-1/2 -translate-y-1/2 font-mono text-xs text-cream-faint">RUB</span>
-      </div>
-
-      <input
-        id="tip-comment"
-        type="text"
-        placeholder="Короткое спасибо (например: за крутой плейлист и настойку)"
-        class="w-full px-3.5 py-2.5 rounded-xl bg-vinyl-card border border-vinyl-border text-xs text-cream placeholder:text-cream-faint mb-4 focus:outline-none focus:border-burgundy-bright"
-      />
-
-      <button
-        type="button"
-        id="submit-tip-btn"
-        onclick="submitTip()"
-        class="tactile-btn w-full py-3.5 rounded-xl bg-cream text-vinyl-bg hover:bg-white font-display font-extrabold text-sm shadow-lg"
-      >
-        Отправить 300 ₽ • СБП / Карта
-      </button>
-    </div>
-  </div>
-
-  <!-- MODAL 3: ОТЗЫВ НА КАРТАХ (5★ -> КАРТЫ, 1-4★ -> ПРИВАТНО МЕНЕДЖЕРУ) -->
-  <div id="review-modal" class="sheet-backdrop fixed inset-0 z-50 bg-black/75 backdrop-blur-xs flex items-end justify-center" onclick="handleBackdropClick(event, 'review-modal')">
-    <div class="sheet-panel w-full max-w-[480px] bg-vinyl-surface border-t border-x border-vinyl-border rounded-t-3xl p-5">
-      <div class="w-10 h-1 rounded-full bg-cream/20 mx-auto mb-4"></div>
-      <div class="flex items-center justify-between mb-2">
-        <h3 class="font-display font-black text-lg text-cream uppercase">Как вам у нас?</h3>
-        <button type="button" onclick="closeModal('review-modal')" class="w-8 h-8 rounded-full bg-vinyl-card text-cream-muted flex items-center justify-center">✕</button>
-      </div>
-      <p class="text-xs text-cream-muted mb-4">
-        Оцените атмосферу, звук и напитки сегодня в «Бульвар 21»
-      </p>
-
-      <!-- Star Rating Selector -->
-      <div class="flex items-center justify-center gap-2 py-2 mb-4" id="star-rating-row">
-        <button type="button" onclick="setReviewStars(1)" class="star-btn tactile-btn text-3xl text-cream/25 transition-transform" aria-label="1 звезда">★</button>
-        <button type="button" onclick="setReviewStars(2)" class="star-btn tactile-btn text-3xl text-cream/25 transition-transform" aria-label="2 звезды">★</button>
-        <button type="button" onclick="setReviewStars(3)" class="star-btn tactile-btn text-3xl text-cream/25 transition-transform" aria-label="3 звезды">★</button>
-        <button type="button" onclick="setReviewStars(4)" class="star-btn tactile-btn text-3xl text-cream/25 transition-transform" aria-label="4 звезды">★</button>
-        <button type="button" onclick="setReviewStars(5)" class="star-btn tactile-btn text-3xl text-cream/25 transition-transform" aria-label="5 звёзд">★</button>
-      </div>
-
-      <!-- 5 Stars Path: External Maps + Bonus -->
-      <div id="review-high-branch" class="hidden space-y-3">
-        <div class="rounded-2xl bg-burgundy/25 border border-burgundy/60 p-3.5 text-center">
-          <div class="font-display font-extrabold text-sm text-cream mb-1">
-            Спасибо за пятёрку! 🖤
-          </div>
-          <p class="text-xs text-cream-muted leading-relaxed">
-            Оставьте пару тёплых слов на Яндекс Картах или 2ГИС, покажите экран бармену и получите <span class="text-cream font-semibold">фирменную настойку 40 мл в подарок</span>.
-          </p>
-        </div>
-
-        <div class="grid grid-cols-2 gap-2.5">
-          <a
-            href="https://yandex.ru/maps/?text=Азов%20Петровский%20бульвар%2021%20Бульвар%2021"
-            target="_blank"
-            rel="noopener noreferrer"
-            onclick="closeModal('review-modal'); showToast('Спасибо! Ждём ваш отзыв на Яндекс Картах 🗺️', '⭐')"
-            class="tactile-btn py-3 px-3 rounded-xl bg-cream text-vinyl-bg font-display font-extrabold text-xs text-center"
-          >
-            Яндекс Карты ↗
-          </a>
-          <a
-            href="https://2gis.ru/search/Азов%20Петровский%20бульвар%2021"
-            target="_blank"
-            rel="noopener noreferrer"
-            onclick="closeModal('review-modal'); showToast('Спасибо! Ждём ваш отзыв в 2ГИС 🗺️', '⭐')"
-            class="tactile-btn py-3 px-3 rounded-xl bg-vinyl-card border border-cream/25 text-cream font-display font-extrabold text-xs text-center"
-          >
-            Открыть 2ГИС ↗
-          </a>
-        </div>
-      </div>
-
-      <!-- 1-4 Stars Path: Direct Internal Feedback to Manager -->
-      <div id="review-low-branch" class="hidden space-y-3">
-        <div class="rounded-2xl bg-vinyl-card border border-vinyl-border p-3">
-          <p class="text-xs text-cream-muted leading-relaxed">
-            Нам жаль, что вечер прошёл не на все 5 звёзд. Напишите напрямую управляющему — мы оперативно всё исправим прямо сейчас.
-          </p>
-        </div>
-
-        <textarea
-          id="private-feedback-text"
-          rows="3"
-          placeholder="Что пошло не так? (напиток, музыка, температура в зале, сервис)..."
-          class="w-full px-3.5 py-2.5 rounded-xl bg-vinyl-card border border-vinyl-border text-xs text-cream placeholder:text-cream-faint focus:outline-none focus:border-burgundy-bright"
-        ></textarea>
-
-        <input
-          id="private-feedback-contact"
-          type="text"
-          placeholder="Ваш Telegram или телефон (если хотите ответ)"
-          class="w-full px-3.5 py-2.5 rounded-xl bg-vinyl-card border border-vinyl-border text-xs text-cream placeholder:text-cream-faint focus:outline-none focus:border-burgundy-bright"
-        />
-
-        <button
-          type="button"
-          onclick="submitPrivateFeedback()"
-          class="tactile-btn w-full py-3 rounded-xl bg-burgundy hover:bg-burgundy-bright font-display font-extrabold text-xs text-cream"
-        >
-          Отправить лично управляющему
-        </button>
-      </div>
-    </div>
-  </div>
-
-  <!-- MODAL 4: ЗАБРОНИРОВАТЬ СТОЛ -->
-  <div id="booking-modal" class="sheet-backdrop fixed inset-0 z-50 bg-black/75 backdrop-blur-xs flex items-end justify-center" onclick="handleBackdropClick(event, 'booking-modal')">
-    <div class="sheet-panel w-full max-w-[480px] bg-vinyl-surface border-t border-x border-vinyl-border rounded-t-3xl p-5">
-      <div class="w-10 h-1 rounded-full bg-cream/20 mx-auto mb-4"></div>
-      <div class="flex items-center justify-between mb-3">
-        <div>
-          <h3 class="font-display font-black text-lg text-cream uppercase">Бронь стола</h3>
-          <p class="text-xs text-cream-muted">Петровский бульвар, 21 • Подтвердим за 5 минут</p>
-        </div>
-        <button type="button" onclick="closeModal('booking-modal')" class="w-8 h-8 rounded-full bg-vinyl-card text-cream-muted flex items-center justify-center">✕</button>
-      </div>
-
-      <form onsubmit="submitBooking(event)" class="space-y-3">
-        <!-- Guests Count -->
-        <div>
-          <label class="block font-mono text-[10px] uppercase tracking-wider text-cream-faint mb-1.5">Сколько гостей</label>
-          <div class="grid grid-cols-5 gap-1.5">
-            <button type="button" onclick="selectBookingGuests(this, '2')" class="bk-guest-btn active tactile-btn py-2 rounded-xl bg-burgundy border border-cream/30 font-mono text-xs font-bold text-cream">2</button>
-            <button type="button" onclick="selectBookingGuests(this, '3')" class="bk-guest-btn tactile-btn py-2 rounded-xl bg-vinyl-card border border-vinyl-border font-mono text-xs text-cream">3</button>
-            <button type="button" onclick="selectBookingGuests(this, '4')" class="bk-guest-btn tactile-btn py-2 rounded-xl bg-vinyl-card border border-vinyl-border font-mono text-xs text-cream">4</button>
-            <button type="button" onclick="selectBookingGuests(this, '6')" class="bk-guest-btn tactile-btn py-2 rounded-xl bg-vinyl-card border border-vinyl-border font-mono text-xs text-cream">6</button>
-            <button type="button" onclick="selectBookingGuests(this, '8+')" class="bk-guest-btn tactile-btn py-2 rounded-xl bg-vinyl-card border border-vinyl-border font-mono text-xs text-cream">8+</button>
-          </div>
-        </div>
-
-        <!-- Time Pills -->
-        <div>
-          <label class="block font-mono text-[10px] uppercase tracking-wider text-cream-faint mb-1.5">Время посадки</label>
-          <div class="grid grid-cols-4 gap-1.5">
-            <button type="button" onclick="selectBookingTime(this, 'Сегодня 20:00')" class="bk-time-btn tactile-btn py-2 rounded-xl bg-vinyl-card border border-vinyl-border font-mono text-[11px] text-cream">20:00</button>
-            <button type="button" onclick="selectBookingTime(this, 'Пт 21:30')" class="bk-time-btn active tactile-btn py-2 rounded-xl bg-burgundy border border-cream/30 font-mono text-[11px] font-bold text-cream">Пт 21:30</button>
-            <button type="button" onclick="selectBookingTime(this, 'Пт 22:30')" class="bk-time-btn tactile-btn py-2 rounded-xl bg-vinyl-card border border-vinyl-border font-mono text-[11px] text-cream">Пт 22:30</button>
-            <button type="button" onclick="selectBookingTime(this, 'Сб 21:00')" class="bk-time-btn tactile-btn py-2 rounded-xl bg-vinyl-card border border-vinyl-border font-mono text-[11px] text-cream">Сб 21:00</button>
-          </div>
-        </div>
-
-        <input
-          id="booking-name"
-          type="text"
-          required
-          placeholder="Ваше имя"
-          class="w-full px-3.5 py-2.5 rounded-xl bg-vinyl-card border border-vinyl-border text-xs text-cream placeholder:text-cream-faint focus:outline-none focus:border-burgundy-bright"
-        />
-
-        <input
-          id="booking-contact"
-          type="text"
-          required
-          placeholder="Телефон или @username в Telegram"
-          class="w-full px-3.5 py-2.5 rounded-xl bg-vinyl-card border border-vinyl-border text-xs text-cream placeholder:text-cream-faint focus:outline-none focus:border-burgundy-bright"
-        />
-
-        <button
-          type="submit"
-          class="tactile-btn w-full py-3.5 rounded-xl bg-cream text-vinyl-bg hover:bg-white font-display font-extrabold text-sm shadow-lg"
-        >
-          Забронировать стол
-        </button>
-      </form>
-    </div>
-  </div>
-
-  <!-- MODAL 5: ЗАКАЗАТЬ ТРЕК / ПОЖЕЛАНИЕ -->
-  <div id="track-modal" class="sheet-backdrop fixed inset-0 z-50 bg-black/75 backdrop-blur-xs flex items-end justify-center" onclick="handleBackdropClick(event, 'track-modal')">
-    <div class="sheet-panel w-full max-w-[480px] bg-vinyl-surface border-t border-x border-vinyl-border rounded-t-3xl p-5">
-      <div class="w-10 h-1 rounded-full bg-cream/20 mx-auto mb-4"></div>
-      <div class="flex items-center justify-between mb-3">
-        <div>
-          <h3 class="font-display font-black text-lg text-cream uppercase">Заказать трек или вайб</h3>
-          <p class="text-xs text-cream-muted">Передадим за пульт: фанк, соул, хип-хоп, лаунж или классика рока</p>
-        </div>
-        <button type="button" onclick="closeModal('track-modal')" class="w-8 h-8 rounded-full bg-vinyl-card text-cream-muted flex items-center justify-center">✕</button>
-      </div>
-
-      <!-- Quick Vibe Presets -->
-      <div class="flex flex-wrap gap-1.5 mb-3">
-        <button type="button" onclick="fillTrackPreset('Daft Punk — Something About Us', 'Мягкий французский электро-фанк')" class="tactile-btn px-2.5 py-1.5 rounded-lg bg-vinyl-card border border-vinyl-border text-[11px] text-cream">
-          🎷 Daft Punk — Something About Us
-        </button>
-        <button type="button" onclick="fillTrackPreset('Khruangbin — Texas Sun', 'Тёплый виниловый психоделик-соул')" class="tactile-btn px-2.5 py-1.5 rounded-lg bg-vinyl-card border border-vinyl-border text-[11px] text-cream">
-          🎸 Khruangbin — Texas Sun
-        </button>
-        <button type="button" onclick="fillTrackPreset('Nujabes — Feather', 'Джазовый хип-хоп и ламповый бит')" class="tactile-btn px-2.5 py-1.5 rounded-lg bg-vinyl-card border border-vinyl-border text-[11px] text-cream">
-          🎧 Nujabes — Feather
-        </button>
-      </div>
-
-      <form onsubmit="submitTrackRequest(event)" class="space-y-3">
-        <input
-          id="track-input"
-          type="text"
-          required
-          placeholder="Исполнитель и название трека (или настроение вечера)..."
-          class="w-full px-3.5 py-2.5 rounded-xl bg-vinyl-card border border-vinyl-border text-xs text-cream placeholder:text-cream-faint focus:outline-none focus:border-burgundy-bright"
-        />
-        <button
-          type="submit"
-          class="tactile-btn w-full py-3.5 rounded-xl bg-burgundy hover:bg-burgundy-bright font-display font-extrabold text-xs text-cream uppercase tracking-wide"
-        >
-          Отправить за барную стойку
-        </button>
-      </form>
-    </div>
-  </div>
-
-  <!-- MODAL 6: НАШ TELEGRAM -->
-  <div id="telegram-modal" class="sheet-backdrop fixed inset-0 z-50 bg-black/75 backdrop-blur-xs flex items-end justify-center" onclick="handleBackdropClick(event, 'telegram-modal')">
-    <div class="sheet-panel w-full max-w-[480px] bg-vinyl-surface border-t border-x border-vinyl-border rounded-t-3xl p-5">
-      <div class="w-10 h-1 rounded-full bg-cream/20 mx-auto mb-4"></div>
-      <div class="flex items-center justify-between mb-3">
-        <div class="flex items-center gap-2.5">
-          <div class="w-11 h-11 rounded-2xl bg-burgundy border border-cream/25 flex items-center justify-center font-display font-black text-sm text-cream">
-            Б•21
-          </div>
-          <div>
-            <h3 class="font-display font-black text-base text-cream">БУЛЬВАР 21 • АЗОВ</h3>
-            <p class="font-mono text-[11px] text-sky-300">@bulvar21_azov • 1.8K подписчиков</p>
-          </div>
-        </div>
-        <button type="button" onclick="closeModal('telegram-modal')" class="w-8 h-8 rounded-full bg-vinyl-card text-cream-muted flex items-center justify-center">✕</button>
-      </div>
-
-      <div class="rounded-2xl bg-vinyl-card border border-vinyl-border p-3.5 space-y-2.5 mb-4">
-        <div class="flex items-center justify-between font-mono text-[10px] text-cream-faint">
-          <span>ЗАКРЕПЛЁННЫЙ ПОСТ</span>
-          <span>СЕГОДНЯ</span>
-        </div>
-        <p class="text-xs text-cream leading-relaxed">
-          🎙️ На этой неделе завезли две редкие пластинки Roy Ayers и свежую партию фирменной настойки «Пряный Егерь». Для подписчиков канала по кодовому слову <span class="font-mono bg-burgundy/50 px-1.5 py-0.5 rounded text-cream">ВИНИЛ21</span> — welcome-шот при заказе от 1000 ₽.
-        </p>
-      </div>
-
-      <a
-        href="https://t.me/s/durov"
-        target="_blank"
-        rel="noopener noreferrer"
-        onclick="closeModal('telegram-modal'); showToast('Открываем Telegram-канал Бульвар 21 ✈️', '📲')"
-        class="tactile-btn block w-full py-3.5 rounded-xl bg-sky-500 hover:bg-sky-400 text-slate-950 font-display font-extrabold text-sm text-center shadow-lg"
-      >
-        Перейти в Telegram-канал ↗
-      </a>
-    </div>
-  </div>
-
-  <!-- =====================================================================
-       APPLICATION LOGIC (MENU DATA, ORDER HELPER, VINYL PLAYER, MODALS)
-       ===================================================================== -->
-  <script>
-    // 1. MENU DATABASE (Authentic Russian Craft / Vinyl Bar Content)
-    const MENU_CATEGORIES = [
-      { id: 'infusions', label: 'Фирменные настойки' },
-      { id: 'beer', label: 'Пиво и сидр' },
-      { id: 'cocktails', label: 'Коктейли' },
-      { id: 'kitchen', label: 'Закуски и кухня' }
-    ];
-
-    const MENU_ITEMS = [
-      // Фирменные настойки
-      {
-        id: 'inf-1',
-        category: 'infusions',
-        name: 'Травяной «Бульвар» (в стиле Егермейстера)',
-        desc: 'Сбор из 18 альпийских и донских трав, бадьян, цедра померанца и лёгкая карамельная горчинка.',
-        volume: '40 мл',
-        abv: '35%',
-        price: 240,
-        tags: ['Травяной', 'Хит'],
-        isHit: true
-      },
-      {
-        id: 'inf-2',
-        category: 'infusions',
-        name: 'Сливочная солёная карамель',
-        desc: 'Бархатная десертная настойка на бурбоне с жжёным сахаром, сливками и щепоткой морской соли.',
-        volume: '40 мл',
-        abv: '22%',
-        price: 230,
-        tags: ['Сливочный', 'Хит'],
-        isHit: true
-      },
-      {
-        id: 'inf-3',
-        category: 'infusions',
-        name: 'Клубника — Мадагаскарская ваниль',
-        desc: 'Натуральный ягодный кордиал, спелая клубника и стручковая ваниль. Пьётся мягко и ароматно.',
-        volume: '40 мл',
-        abv: '24%',
-        price: 220,
-        tags: ['Ягодный', 'Мягкий'],
-        isHit: false
-      },
-      {
-        id: 'inf-4',
-        category: 'infusions',
-        name: 'Пряная вишня на тёмном роме',
-        desc: 'Насыщенная терпкая вишня с корицей, гвоздикой и оттенком выдержанного рома.',
-        volume: '40 мл',
-        abv: '28%',
-        price: 240,
-        tags: ['Пряный', 'Авторское'],
-        isHit: false
-      },
-      {
-        id: 'inf-5',
-        category: 'infusions',
-        name: 'Сет на компанию «Виниловая дорожка»',
-        desc: '6 любых фирменных настоек на выбор на деревянной подаче с дольками апельсина и корицей.',
-        volume: '6 × 40 мл',
-        abv: '22–35%',
-        price: 1290,
-        tags: ['Сет', 'Хит'],
-        isHit: true
-      },
-
-      // Пиво и сидр
-      {
-        id: 'beer-1',
-        category: 'beer',
-        name: 'Чешский Пилснер (Богемский классик)',
-        desc: 'Хрустящий золотистый лагер с благородным жатецким хмелем и чистым сухим финишем.',
-        volume: '500 мл',
-        abv: '4.8% • IBU 32',
-        price: 340,
-        tags: ['На кране', 'Хит'],
-        isHit: true
-      },
-      {
-        id: 'beer-2',
-        category: 'beer',
-        name: 'Ореховый Брауни-Эль (Nut Brown Ale)',
-        desc: 'Тёмно-каштановый крафтовый эль с нотами жареного фундука, какао-бобов и бисквита.',
-        volume: '500 мл',
-        abv: '5.6% • IBU 24',
-        price: 390,
-        tags: ['На кране', 'Крафт'],
-        isHit: true
-      },
-      {
-        id: 'beer-3',
-        category: 'beer',
-        name: 'Hazy IPA «Аналоговый джем»',
-        desc: 'Мутный сочный индиа пейл эль с тропическим профилем манго, маракуйи и грейпфрута.',
-        volume: '400 мл',
-        abv: '6.4% • IBU 45',
-        price: 420,
-        tags: ['На кране', 'Хмелевой'],
-        isHit: false
-      },
-      {
-        id: 'beer-4',
-        category: 'beer',
-        name: 'Сухой яблочный сидр «Нормандия»',
-        desc: 'Натуральный сидр прямого отжима с освежающей кислинкой зелёных яблок.',
-        volume: '500 мл',
-        abv: '5.0%',
-        price: 350,
-        tags: ['На кране', 'Лёгкий'],
-        isHit: false
-      },
-
-      // Коктейли
-      {
-        id: 'cock-1',
-        category: 'cocktails',
-        name: 'Boulevardier 21 (Бульвардье)',
-        desc: 'Наша визитная карточка: бурбон, красный вермут, биттер и вишнёвый дымок.',
-        volume: '140 мл',
-        abv: '27%',
-        price: 540,
-        tags: ['Крепкий', 'Хит'],
-        isHit: true
-      },
-      {
-        id: 'cock-2',
-        category: 'cocktails',
-        name: 'Vinyl Sour (Винил Сауэр)',
-        desc: 'Джин на смородине, лимонный фреш, белковая пена и пудра из сублимированной малины.',
-        volume: '160 мл',
-        abv: '16%',
-        price: 490,
-        tags: ['Кисло-сладкий', 'Авторское'],
-        isHit: true
-      },
-      {
-        id: 'cock-3',
-        category: 'cocktails',
-        name: 'Espresso Martini на солёной карамели',
-        desc: 'Свежесваренный эспрессо, водка, кофейный ликёр и капля нашей карамельной настойки.',
-        volume: '150 мл',
-        abv: '19%',
-        price: 510,
-        tags: ['Кофейный', 'Бодрящий'],
-        isHit: false
-      },
-
-      // Закуски и кухня
-      {
-        id: 'food-1',
-        category: 'kitchen',
-        name: 'Хот-дог с рваной курицей и сырным чеддером',
-        desc: 'Бриошь на гриле, томлёная в специях рваная курица, тёплый соус чеддер, халапеньо и хрустящий лук.',
-        volume: '290 г',
-        abv: 'Горячее',
-        price: 460,
-        tags: ['Хит', 'Сытно'],
-        isHit: true
-      },
-      {
-        id: 'food-2',
-        category: 'kitchen',
-        name: 'Бородинские гренки с чесноком и пармезаном',
-        desc: 'Хрустящие брусочки тёмного хлеба, тёртый выдержанный пармезан и фирменный соус блю-чиз.',
-        volume: '210 г',
-        abv: 'К пиву',
-        price: 290,
-        tags: ['Хит', 'Классика'],
-        isHit: true
-      },
-      {
-        id: 'food-3',
-        category: 'kitchen',
-        name: 'Плато мясных деликатесов к винилу',
-        desc: 'Ростбиф, сыровяленая утка, чоризо, маринованные корнишоны, зернистая горчица и чиабатта.',
-        volume: '340 г',
-        abv: 'На компанию',
-        price: 790,
-        tags: ['На компанию', 'Деликатесы'],
-        isHit: false
-      },
-      {
-        id: 'food-4',
-        category: 'kitchen',
-        name: 'Картофель фри с трюфельным айоли',
-        desc: 'Золотистый картофель с морской солью, пармезаном и ароматным соусом на белом трюфеле.',
-        volume: '200 г',
-        abv: 'Закуска',
-        price: 320,
-        tags: ['Хрустящее'],
-        isHit: false
-      }
-    ];
-
-    // 2. APPLICATION STATE
-    let activeCategory = 'infusions';
-    let searchQuery = '';
-    let onlyHits = false;
-    let isVinylPlaying = true;
-    let orderCart = {}; // { itemId: quantity }
-    let selectedTipAmount = 300;
-    let selectedTipRecipient = 'Бармену за стойкой';
-    let selectedBookingGuests = '2';
-    let selectedBookingTime = 'Пт 21:30';
-    let selectedStars = 0;
-    let toastTimeout = null;
-
-    // 3. INITIALIZATION
-    document.addEventListener('DOMContentLoaded', () => {
-      renderCategoryTabs();
-      renderMenuItems();
-      updateFloatingOrderBar();
-    });
-
-    // 4. VINYL RECORD INTERACTIVITY
-    function toggleVinylSpin() {
-      isVinylPlaying = !isVinylPlaying;
-      const disc = document.getElementById('vinyl-disc');
-      const tonearm = document.getElementById('vinyl-tonearm');
-      const eqBars = document.getElementById('eq-bars');
-      const statusText = document.getElementById('vinyl-status-text');
-      const btnIcon = document.getElementById('vinyl-btn-icon');
-      const btnLabel = document.getElementById('vinyl-btn-label');
-
-      if (isVinylPlaying) {
-        disc.classList.remove('vinyl-paused');
-        disc.classList.add('vinyl-spinning');
-        tonearm.classList.remove('tonearm-parked');
-        tonearm.classList.add('tonearm-engaged');
-        eqBars.classList.remove('eq-paused');
-        statusText.textContent = 'Сейчас крутится';
-        btnIcon.textContent = '❚❚';
-        btnLabel.textContent = 'Пауза';
-      } else {
-        disc.classList.remove('vinyl-spinning');
-        disc.classList.add('vinyl-paused');
-        tonearm.classList.remove('tonearm-engaged');
-        tonearm.classList.add('tonearm-parked');
-        eqBars.classList.add('eq-paused');
-        statusText.textContent = 'На паузе';
-        btnIcon.textContent = '▶';
-        btnLabel.textContent = 'Крутить';
-      }
-    }
-
-    function fillTrackPreset(title, vibe) {
-      document.getElementById('track-input').value = title;
-      document.getElementById('track-input').dataset.vibe = vibe;
-    }
-
-    function submitTrackRequest(e) {
-      e.preventDefault();
-      const input = document.getElementById('track-input');
-      const trackName = input.value.trim();
-      if (!trackName) return;
-
-      const vibe = input.dataset.vibe || 'Заказ гостя со стола #04';
-      document.getElementById('current-track-title').textContent = trackName;
-      document.getElementById('current-track-vibe').textContent = vibe;
-
-      if (!isVinylPlaying) {
-        toggleVinylSpin();
-      }
-
-      input.value = '';
-      delete input.dataset.vibe;
-      closeModal('track-modal');
-      showToast(`Трек «${trackName}» отправлен за стойку!`, '🎶');
-    }
-
-    // 5. MENU RENDERING & FILTERING
-    function renderCategoryTabs() {
-      const container = document.getElementById('category-tabs');
-      container.innerHTML = MENU_CATEGORIES.map(cat => {
-        const isActive = cat.id === activeCategory && !searchQuery && !onlyHits;
-        return `
-          <button
-            type="button"
-            role="tab"
-            aria-selected="${isActive}"
-            onclick="selectCategory('${cat.id}')"
-            class="tactile-btn px-3.5 py-2 rounded-xl font-display font-bold text-xs whitespace-nowrap transition-colors ${
-              isActive
-                ? 'bg-burgundy text-cream border border-cream/25 shadow-sm'
-                : 'bg-vinyl-card text-cream-muted hover:text-cream border border-vinyl-border'
-            }"
-          >
-            ${cat.label}
-          </button>
-        `;
-      }).join('');
-    }
-
-    function selectCategory(catId) {
-      activeCategory = catId;
-      onlyHits = false;
-      updateHitFilterButton();
-      renderCategoryTabs();
-      renderMenuItems();
-    }
-
-    function handleSearch(val) {
-      searchQuery = val.trim().toLowerCase();
-      renderCategoryTabs();
-      renderMenuItems();
-    }
-
-    function toggleHitFilter() {
-      onlyHits = !onlyHits;
-      updateHitFilterButton();
-      renderCategoryTabs();
-      renderMenuItems();
-    }
-
-    function updateHitFilterButton() {
-      const btn = document.getElementById('hit-filter-btn');
-      if (onlyHits) {
-        btn.classList.remove('bg-vinyl-surface', 'text-cream-muted', 'border-vinyl-border');
-        btn.classList.add('bg-burgundy', 'text-cream', 'border-cream/30');
-      } else {
-        btn.classList.add('bg-vinyl-surface', 'text-cream-muted', 'border-vinyl-border');
-        btn.classList.remove('bg-burgundy', 'text-cream', 'border-cream/30');
-      }
-    }
-
-    function renderMenuItems() {
-      const container = document.getElementById('menu-items-list');
-      const filtered = MENU_ITEMS.filter(item => {
-        if (onlyHits && !item.isHit) return false;
-        if (!searchQuery && !onlyHits && item.category !== activeCategory) return false;
-        if (searchQuery) {
-          const haystack = `${item.name} ${item.desc} ${item.tags.join(' ')}`.toLowerCase();
-          return haystack.includes(searchQuery);
-        }
-        return true;
-      });
-
-      if (filtered.length === 0) {
-        container.innerHTML = `
-          <div class="rounded-2xl bg-vinyl-card border border-vinyl-border p-6 text-center">
-            <div class="text-2xl mb-2">💿</div>
-            <div class="font-display font-bold text-sm text-cream">Ничего не нашлось</div>
-            <p class="text-xs text-cream-muted mt-1">Попробуйте изменить запрос или выбрать другую категорию</p>
-          </div>
-        `;
-        return;
-      }
-
-      container.innerHTML = filtered.map(item => {
-        const qty = orderCart[item.id] || 0;
-        const tagsHtml = item.tags.map(tag => {
-          const isHitTag = tag === 'Хит';
-          return `<span class="px-2 py-0.5 rounded-md font-mono text-[10px] ${
-            isHitTag
-              ? 'bg-burgundy/40 text-cream border border-burgundy-bright/50'
-              : 'bg-vinyl-elevated text-cream-muted border border-vinyl-border'
-          }">${tag}</span>`;
-        }).join('');
-
-        return `
-          <article class="rounded-2xl bg-vinyl-card border border-vinyl-border p-3.5 transition-colors hover:border-cream/20">
-            <div class="flex items-start justify-between gap-3">
-              <div class="min-w-0 flex-1">
-                <div class="flex flex-wrap items-center gap-1.5 mb-1.5">
-                  ${tagsHtml}
-                  <span class="font-mono text-[10px] text-cream-faint">
-                    ${item.volume} • ${item.abv}
-                  </span>
-                </div>
-                <h3 class="font-display font-extrabold text-[15px] text-cream leading-snug">
-                  ${item.name}
-                </h3>
-                <p class="text-xs text-cream-muted mt-1 leading-relaxed">
-                  ${item.desc}
-                </p>
-              </div>
-            </div>
-
-            <div class="mt-3 pt-2.5 border-t border-vinyl-border/70 flex items-center justify-between gap-2">
-              <div class="font-mono font-bold text-base text-cream">
-                ${item.price} ₽
-              </div>
-
-              ${
-                qty === 0
-                  ? `<button
-                      type="button"
-                      onclick="updateItemQty('${item.id}', 1)"
-                      class="tactile-btn px-3.5 py-1.5 rounded-xl bg-vinyl-elevated hover:bg-burgundy border border-vinyl-border hover:border-cream/30 font-mono text-xs font-semibold text-cream flex items-center gap-1.5"
-                    >
-                      <span>+</span>
-                      <span>В заметки</span>
-                    </button>`
-                  : `<div class="inline-flex items-center gap-2 bg-burgundy rounded-xl p-1 border border-cream/25">
-                      <button
-                        type="button"
-                        onclick="updateItemQty('${item.id}', -1)"
-                        aria-label="Уменьшить количество"
-                        class="tactile-btn w-7 h-7 rounded-lg bg-vinyl-bg/40 hover:bg-vinyl-bg/70 font-mono font-bold text-sm text-cream flex items-center justify-center"
-                      >−</button>
-                      <span class="font-mono font-bold text-xs text-cream min-w-[20px] text-center">${qty}</span>
-                      <button
-                        type="button"
-                        onclick="updateItemQty('${item.id}', 1)"
-                        aria-label="Увеличить количество"
-                        class="tactile-btn w-7 h-7 rounded-lg bg-vinyl-bg/40 hover:bg-vinyl-bg/70 font-mono font-bold text-sm text-cream flex items-center justify-center"
-                      >+</button>
-                    </div>`
-              }
-            </div>
-          </article>
-        `;
-      }).join('');
-    }
-
-    // 6. TABLE-SIDE ORDER HELPER ("МОЙ ВЫБОР")
-    function updateItemQty(itemId, delta) {
-      const current = orderCart[itemId] || 0;
-      const next = current + delta;
-      if (next <= 0) {
-        delete orderCart[itemId];
-      } else {
-        orderCart[itemId] = next;
-      }
-      renderMenuItems();
-      updateFloatingOrderBar();
-      renderOrderDrawer();
-    }
-
-    function updateFloatingOrderBar() {
-      const bar = document.getElementById('order-floating-bar');
-      const badge = document.getElementById('order-badge-count');
-      const totalPill = document.getElementById('order-total-pill');
-
-      let totalCount = 0;
-      let totalSum = 0;
-
-      for (const [id, qty] of Object.entries(orderCart)) {
-        const item = MENU_ITEMS.find(i => i.id === id);
-        if (item) {
-          totalCount += qty;
-          totalSum += item.price * qty;
-        }
-      }
-
-      badge.textContent = totalCount;
-      totalPill.textContent = `${totalSum.toLocaleString('ru-RU')} ₽`;
-
-      if (totalCount > 0) {
-        bar.classList.remove('translate-y-28', 'opacity-0', 'pointer-events-none');
-      } else {
-        bar.classList.add('translate-y-28', 'opacity-0', 'pointer-events-none');
-      }
-    }
-
-    function renderOrderDrawer() {
-      const container = document.getElementById('order-drawer-items');
-      const totalEl = document.getElementById('drawer-total-sum');
-      const entries = Object.entries(orderCart);
-
-      if (entries.length === 0) {
-        container.innerHTML = `
-          <div class="text-center py-6 text-xs text-cream-muted">
-            Список пока пуст. Добавьте напитки или закуски из меню.
-          </div>
-        `;
-        totalEl.textContent = '0 ₽';
-        return;
-      }
-
-      let sum = 0;
-      container.innerHTML = entries.map(([id, qty]) => {
-        const item = MENU_ITEMS.find(i => i.id === id);
-        if (!item) return '';
-        const rowSum = item.price * qty;
-        sum += rowSum;
-        return `
-          <div class="rounded-xl bg-vinyl-card border border-vinyl-border p-3 flex items-center justify-between gap-3">
-            <div class="min-w-0">
-              <div class="font-semibold text-xs text-cream truncate">${item.name}</div>
-              <div class="font-mono text-[11px] text-cream-muted mt-0.5">${item.volume} • ${rowSum} ₽</div>
-            </div>
-            <div class="inline-flex items-center gap-2 bg-vinyl-elevated rounded-lg p-1 border border-vinyl-border shrink-0">
-              <button type="button" onclick="updateItemQty('${item.id}', -1)" class="w-6 h-6 rounded bg-vinyl-card font-mono text-xs text-cream">−</button>
-              <span class="font-mono text-xs font-bold text-cream w-4 text-center">${qty}</span>
-              <button type="button" onclick="updateItemQty('${item.id}', 1)" class="w-6 h-6 rounded bg-vinyl-card font-mono text-xs text-cream">+</button>
-            </div>
-          </div>
-        `;
-      }).join('');
-
-      totalEl.textContent = `${sum.toLocaleString('ru-RU')} ₽`;
-    }
-
-    function clearOrder() {
-      orderCart = {};
-      renderMenuItems();
-      updateFloatingOrderBar();
-      closeModal('order-drawer-modal');
-      showToast('Заметки к заказу очищены', '🧹');
-    }
-
-    function copyOrderSummary() {
-      const lines = ['БУЛЬВАР 21 • Мой выбор (Стол #04):'];
-      let sum = 0;
-      for (const [id, qty] of Object.entries(orderCart)) {
-        const item = MENU_ITEMS.find(i => i.id === id);
-        if (item) {
-          lines.push(`• ${item.name} × ${qty} — ${item.price * qty} ₽`);
-          sum += item.price * qty;
-        }
-      }
-      const note = document.getElementById('order-table-note').value.trim();
-      if (note) lines.push(`Комментарий: ${note}`);
-      lines.push(`Итого: ${sum} ₽`);
-
-      copyTextToClipboard(lines.join('\n'), 'Список заказа скопирован в буфер обмена!');
-    }
-
-    // 7. TIPS MODAL LOGIC
-    function selectTipRecipient(btn, label) {
-      selectedTipRecipient = label;
-      document.querySelectorAll('.tip-rec-btn').forEach(el => {
-        el.classList.remove('bg-burgundy', 'border-cream/30');
-        el.classList.add('bg-vinyl-card', 'border-vinyl-border');
-      });
-      btn.classList.remove('bg-vinyl-card', 'border-vinyl-border');
-      btn.classList.add('bg-burgundy', 'border-cream/30');
-    }
-
-    function selectTipAmount(amount, btn) {
-      selectedTipAmount = amount;
-      document.getElementById('custom-tip-input').value = amount;
-      document.querySelectorAll('.tip-amt-btn').forEach(el => {
-        el.classList.remove('bg-burgundy', 'border-cream/30');
-        el.classList.add('bg-vinyl-card', 'border-vinyl-border');
-      });
-      btn.classList.remove('bg-vinyl-card', 'border-vinyl-border');
-      btn.classList.add('bg-burgundy', 'border-cream/30');
-      updateTipButtonLabel();
-    }
-
-    function focusCustomTip() {
-      const input = document.getElementById('custom-tip-input');
-      input.focus();
-      input.select();
-    }
-
-    function updateTipButtonLabel() {
-      const btn = document.getElementById('submit-tip-btn');
-      const amt = Math.max(0, selectedTipAmount);
-      btn.textContent = `Отправить ${amt} ₽ • СБП / Карта`;
-    }
-
-    function submitTip() {
-      if (selectedTipAmount < 50) {
-        showToast('Минимальная сумма чаевых — 50 ₽', '💳');
-        return;
-      }
-      closeModal('tip-modal');
-      showToast(`Спасибо! Чаевые ${selectedTipAmount} ₽ (${selectedTipRecipient}) отправлены 🖤`, '🥂');
-    }
-
-    // 8. REVIEW MODAL LOGIC (5★ -> MAPS, 1-4★ -> INTERNAL MANAGER)
-    function setReviewStars(count) {
-      selectedStars = count;
-      const stars = document.querySelectorAll('.star-btn');
-      stars.forEach((btn, idx) => {
-        if (idx < count) {
-          btn.classList.remove('text-cream/25');
-          btn.classList.add('text-amber-400', 'scale-110');
-        } else {
-          btn.classList.add('text-cream/25');
-          btn.classList.remove('text-amber-400', 'scale-110');
-        }
-      });
-
-      const highBranch = document.getElementById('review-high-branch');
-      const lowBranch = document.getElementById('review-low-branch');
-
-      if (count === 5) {
-        highBranch.classList.remove('hidden');
-        lowBranch.classList.add('hidden');
-      } else {
-        lowBranch.classList.remove('hidden');
-        highBranch.classList.add('hidden');
-      }
-    }
-
-    function submitPrivateFeedback() {
-      const text = document.getElementById('private-feedback-text').value.trim();
-      if (!text) {
-        showToast('Напишите пару слов, чтобы мы могли помочь', '✍️');
-        return;
-      }
-      document.getElementById('private-feedback-text').value = '';
-      closeModal('review-modal');
-      showToast('Сообщение передано лично управляющему. Спасибо за честность!', '🤝');
-    }
-
-    // 9. TABLE BOOKING MODAL LOGIC
-    function selectBookingGuests(btn, count) {
-      selectedBookingGuests = count;
-      document.querySelectorAll('.bk-guest-btn').forEach(el => {
-        el.classList.remove('bg-burgundy', 'border-cream/30', 'font-bold');
-        el.classList.add('bg-vinyl-card', 'border-vinyl-border');
-      });
-      btn.classList.remove('bg-vinyl-card', 'border-vinyl-border');
-      btn.classList.add('bg-burgundy', 'border-cream/30', 'font-bold');
-    }
-
-    function selectBookingTime(btn, time) {
-      selectedBookingTime = time;
-      document.querySelectorAll('.bk-time-btn').forEach(el => {
-        el.classList.remove('bg-burgundy', 'border-cream/30', 'font-bold');
-        el.classList.add('bg-vinyl-card', 'border-vinyl-border');
-      });
-      btn.classList.remove('bg-vinyl-card', 'border-vinyl-border');
-      btn.classList.add('bg-burgundy', 'border-cream/30', 'font-bold');
-    }
-
-    function submitBooking(e) {
-      e.preventDefault();
-      const name = document.getElementById('booking-name').value.trim();
-      closeModal('booking-modal');
-      showToast(`${name}, бронь на ${selectedBookingGuests} гостя (${selectedBookingTime}) принята!`, '📅');
-      e.target.reset();
-    }
-
-    // 10. WI-FI CLIPBOARD & MODAL HELPERS
-    function copyWifiPassword() {
-      copyTextToClipboard('vinyl21azov', 'Пароль Wi-Fi «vinyl21azov» скопирован! Сеть: Bulvar21_Guest');
-    }
-
-    function copyTextToClipboard(text, successMsg) {
-      try {
-        const tempInput = document.createElement('textarea');
-        tempInput.value = text;
-        tempInput.style.position = 'fixed';
-        tempInput.style.opacity = '0';
-        document.body.appendChild(tempInput);
-        tempInput.select();
-        document.execCommand('copy');
-        document.body.removeChild(tempInput);
-        showToast(successMsg, '📋');
-      } catch (err) {
-        showToast('Пароль Wi-Fi: vinyl21azov', '📶');
-      }
-    }
-
-    function openModal(modalId) {
-      if (modalId === 'order-drawer-modal') {
-        renderOrderDrawer();
-      }
-      const modal = document.getElementById(modalId);
-      if (modal) {
-        modal.classList.add('open');
-        document.body.style.overflow = 'hidden';
-      }
-    }
-
-    function closeModal(modalId) {
-      const modal = document.getElementById(modalId);
-      if (modal) {
-        modal.classList.remove('open');
-        document.body.style.overflow = '';
-      }
-    }
-
-    function handleBackdropClick(e, modalId) {
-      if (e.target.id === modalId) {
-        closeModal(modalId);
-      }
-    }
-
-    function showToast(message, icon = '✨') {
-      const banner = document.getElementById('toast-banner');
-      document.getElementById('toast-text').textContent = message;
-      document.getElementById('toast-icon').textContent = icon;
-
-      banner.classList.remove('opacity-0', '-translate-y-4');
-      banner.classList.add('opacity-100', 'translate-y-0');
-
-      clearTimeout(toastTimeout);
-      toastTimeout = setTimeout(() => {
-        banner.classList.add('opacity-0', '-translate-y-4');
-        banner.classList.remove('opacity-100', 'translate-y-0');
-      }, 3400);
-    }
-  </script>
+    <footer>
+            <p>Бульвар 21 &copy; 2025</p>
+        </footer>
+
+    <script>
+        // Обработка тач-событий для мобильных устройств
+        document.querySelectorAll('.button').forEach(button => {
+            button.addEventListener('touchstart', function() {
+                this.style.transform = 'scale(0.98)';
+            }, { passive: true });
+
+            button.addEventListener('touchend', function() {
+                this.style.transform = '';
+            }, { passive: true });
+        });
+    </script>
 </body>
 </html>
